@@ -1,14 +1,31 @@
-import { createPortal } from 'react-dom';
+import { createPortal } from "react-dom";
+import { motion } from "framer-motion";
 
 export default function Modal({ title, children, onClose }) {
+  // const hiddenAnimationState = { opacity: 0, y: 30 };
+
   return createPortal(
     <>
       <div className="backdrop" onClick={onClose} />
-      <dialog open className="modal">
+      <motion.dialog
+        variants={{
+          hidden: { opacity: 0, y: 30 },
+          visible: { opacity: 1, y: 0 },
+          exit: { opacity: 0, y: 30 },
+        }}
+        // initial={{ opacity: 0, y: 30 }}
+        initial="hidden"
+        // animate={{ opacity: 1, y: 0 }}
+        animate="visible"
+        // exit={{ opacity: 0, y: 30 }}
+        exit="exit"
+        open
+        className="modal"
+      >
         <h2>{title}</h2>
         {children}
-      </dialog>
+      </motion.dialog>
     </>,
-    document.getElementById('modal')
+    document.getElementById("modal")
   );
 }
